@@ -2,10 +2,14 @@ package org.example.healthcare.model;
 
 
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+@Builder
 @Entity
 @Table(name = "doctor")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
