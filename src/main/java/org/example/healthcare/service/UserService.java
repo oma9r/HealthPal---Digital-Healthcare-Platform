@@ -38,7 +38,9 @@ public class UserService {
     public User getByFullName(String name) {
         return userRepo.findByFullName(name);
     }
-
+    public User addUser(User user) {
+        return userRepo.save(user);
+    }
 
 
 

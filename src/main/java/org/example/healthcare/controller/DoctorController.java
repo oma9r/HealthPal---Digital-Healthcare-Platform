@@ -26,11 +26,8 @@ public class DoctorController {
     public Doctor getDoctorById(@RequestParam int id) {
         return doctorService.getDoctorById(id);
     }
-    @PostMapping("/addDoc")
-    public  Doctor createDoctor(@RequestBody DoctorRegistrationRequest doctor) {
 
-        return doctorService.registerDoctor(doctor);
-    }
+
 
 
 

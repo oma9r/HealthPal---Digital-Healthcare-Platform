@@ -2,6 +2,8 @@ package org.example.healthcare.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import jakarta.validation.constraints.NotBlank;
+
 
 import java.sql.Timestamp;
 
@@ -17,6 +19,8 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+    @NotBlank(message = "name cant be blank")
+    @Column(nullable = false)
     private String fullName;
     @Column(unique = true, nullable = false)
     private String email;
