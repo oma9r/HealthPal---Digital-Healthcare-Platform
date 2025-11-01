@@ -2,14 +2,15 @@ package org.example.healthcare.model;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
 @Builder
 @Entity
 @Table(name = "doctor")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,35 +22,5 @@ public class Doctor {
     private String specialty;
     private String bio;
 
-    public int getDoctorId() {
-        return doctorId;
-    }
 
-    public void setDoctorId(int doctorId) {
-        this.doctorId = doctorId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
 }

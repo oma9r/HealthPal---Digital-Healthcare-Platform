@@ -1,6 +1,10 @@
 package org.example.healthcare.controller;
 
 
+import org.example.healthcare.model.Doctor;
+import org.example.healthcare.model.Patient;
+import org.example.healthcare.repository.DoctorRepo;
+import org.example.healthcare.repository.PatientRepo;
 import org.example.healthcare.repository.UserRepo;
 import org.example.healthcare.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +23,41 @@ public class AuthController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private DoctorRepo doctorRepo;
+    @Autowired
+    private PatientRepo patientRepo;
 
 
-
-
-
-    @PostMapping("/register")
+    @PostMapping("/register/admin")
     public User register(@RequestBody User user) {
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
         return userRepository.save(user);
 
+
     }
+    @PostMapping("/register/patient")
+    public Patient registerPatient(@RequestBody Patient patient) {
+        User user = patient.getUser();
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+
+        userRepository.save(user);
+        return patientRepo.save(patient);
+
+
+    }
+    @PostMapping("/register/doctor")
+    public Doctor registerDoctor(@RequestBody Doctor doctor) {
+        User user = doctor.getUser();
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+
+        userRepository.save(user);
+        return doctorRepo.save(doctor);
+
+
+    }
+
+
 
     @PostMapping("/login")
     public String login(@RequestBody User request) {

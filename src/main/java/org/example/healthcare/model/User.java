@@ -35,4 +35,7 @@ public class User {
     }
 
 
+    public boolean hasRole(String role) {
+        return this.role.name().equals(role);
+    }
 }
