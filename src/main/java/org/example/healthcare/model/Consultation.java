@@ -1,21 +1,22 @@
 package org.example.healthcare.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-/*
+
 @Builder
 @Entity
 @Table(name = "consultation")
 @NoArgsConstructor
 @AllArgsConstructor
-*/
+@Getter
+@Setter
+
 public class Consultation {
-  /*  @Id
+    @Id
+    @Column(name ="consultation_id")
     private int id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name ="patient_id", referencedColumnName = "patient_id")
@@ -37,6 +38,7 @@ public class Consultation {
     @Column(columnDefinition = "TEXT")
     private String notes;
     @Column(name = "created_at")
-    private LocalDateTime createdAt;*/
+    private LocalDateTime createdAt;
+
 
 }

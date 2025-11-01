@@ -1,6 +1,5 @@
 package org.example.healthcare.controller;
 
-import org.example.healthcare.dto.DoctorRegistrationRequest;
 import org.example.healthcare.model.Doctor;
 import org.example.healthcare.service.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
