@@ -8,20 +8,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/Doctor")
+@RequestMapping("/api/doctor")
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
 
-    @GetMapping
+
+
+    @GetMapping("/all")
     public List<Doctor> getAllDoctors() {
-        return doctorService.getAllDoctors();
+
+       return doctorService.getAllDoctors();
+
     }
-//TODO complete fixing this
-    @PostMapping
-    public  Doctor createDoctor(@RequestBody Doctor doctor) {
-        return doctorService.saveDoctor(doctor);
+    @GetMapping("/id/")
+    public Doctor getDoctorById(@RequestParam int id) {
+        return doctorService.getDoctorById(id);
     }
+
+
 
 
 
