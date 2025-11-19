@@ -18,10 +18,10 @@ public class Consultation {
     @Id
     @Column(name ="consultation_id")
     private int id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name ="patient_id", referencedColumnName = "patient_id")
     private Patient patient;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id",referencedColumnName = "doctor_id")
     private Doctor doctor;
     @Column(name = "scheduled_at", nullable = false)

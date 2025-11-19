@@ -28,6 +28,8 @@ public class AuthController {
     @Autowired
     private PatientRepo patientRepo;
 
+    //TODO: add validation
+
 
     @PostMapping("/register/admin")
     public User register(@RequestBody User user) {
@@ -46,11 +48,14 @@ public class AuthController {
 
 
     }
+
     @PostMapping("/register/doctor")
-    public Doctor registerDoctor(@RequestBody Doctor doctor) {
+    public Object registerDoctor(@RequestBody Doctor doctor) {
         User user = doctor.getUser();
         user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
-
+        if(userRepository.findByEmail(user.getEmail()) != null){
+            return "Duplicate email address";
+        }
         userRepository.save(user);
         return doctorRepo.save(doctor);
 
