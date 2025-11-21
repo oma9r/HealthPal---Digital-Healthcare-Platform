@@ -39,6 +39,8 @@ public class ConsultationController {
     @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'ADMIN')")
     public List<Consultation> getMyConsultations(Authentication auth) {
         String email = auth.getName();
+        System.out.println(email);
+
         return consultationService.getConsultationsForUser(email);
     }
 
@@ -50,10 +52,10 @@ public class ConsultationController {
             Authentication auth) {
 
         Consultation consultation = consultationService.getConsultationById(id);
-        int username = Integer.parseInt(auth.getName());
+        String userEmail = auth.getName();
 
         // Check ownership
-        if (!consultationService.canAccessConsultation(username, consultation)) {
+        if (!consultationService.canAccessConsultation(userEmail, consultation)) {
             throw new AccessDeniedException("You are not allowed to access this consultation.");
         }
 
@@ -71,8 +73,7 @@ public class ConsultationController {
 
         Doctor doctor = doctorRepo.findByDoctorId(request.getDoctorId());
         User user = userRepo.findByEmail(email);
-        Patient patient = patientRepo.findByUser(user);
-
+        Patient patient = patientRepo.findByUserUserId(user.getUserId());
         Consultation consultation = new Consultation();
         consultation.setDoctor(doctor);
         consultation.setPatient(patient);
@@ -83,7 +84,7 @@ public class ConsultationController {
         consultation.setStatus("SCHEDULED");
         consultation.setCreatedAt(LocalDateTime.now());
 
-        Consultation created = consultationService.createConsultation(consultation, email);
+        Consultation created = consultationService.createConsultation(consultation);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

@@ -24,16 +24,16 @@ public class ConsultationService {
     @Autowired
     private final DoctorRepo doctorRepo;
 
-    public boolean canAccessConsultation(Integer userId, Consultation consultation) {
-        User user = userRepository.findById(userId).orElseThrow();
+    public boolean canAccessConsultation(String userEmail, Consultation consultation) {
+        User user = userRepository.findByEmail(userEmail);
         if (user.hasRole("ADMIN")) return true;
 
         // patient can access only their consultations
-        if (user.hasRole("PATIENT") && consultation.getPatient().getUser().getUserId() == userId)
+        if (user.hasRole("PATIENT") && consultation.getPatient().getUser().getUserId() == user.getUserId())
             return true;
 
         // doctor can access only assigned consultations
-        if (user.hasRole("DOCTOR") && consultation.getDoctor().getUser().getUserId() == userId)
+        if (user.hasRole("DOCTOR") && consultation.getDoctor().getUser().getUserId() == user.getUserId())
             return true;
 
         return false;
@@ -42,7 +42,8 @@ public class ConsultationService {
     public List<Consultation> getConsultationsForUser(String email) {
         User user = userRepository.findByEmail(email);
         if (user.hasRole("PATIENT")) {
-            return consultationRepository.findByPatient(patientRepo.findByUser(user));
+
+            return consultationRepository.findByPatient(patientRepo.findByUserUserId(user.getUserId()));
         } else if (user.hasRole("DOCTOR")) {
             return consultationRepository.findByDoctor(doctorRepo.findByUser(user));
         } else {
@@ -54,7 +55,7 @@ public class ConsultationService {
         return consultationRepository.findById(id);
     }
 
-    public Consultation createConsultation(Consultation cons, String patientUsername) {
+    public Consultation createConsultation(Consultation cons) {
 
        return consultationRepository.save(cons);
     }

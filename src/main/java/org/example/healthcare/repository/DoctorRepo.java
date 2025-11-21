@@ -13,10 +13,10 @@ public interface DoctorRepo extends JpaRepository<Doctor, Integer> {
     Doctor findByDoctorId(int id);
     Doctor findByUser_UserId(int userId);
     List<Doctor> findByUser_verifiedTrue();
-    List<Doctor> findBySpecialtyIgnoreCase(String specialty);
+    List<Doctor> findBySpecialityIgnoreCase(String specialty);
     Doctor findByUser(User user);
     @Query("SELECT d FROM Doctor d WHERE LOWER(d.bio) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
-            "OR LOWER(d.specialty) LIKE LOWER(CONCAT('%', :keyword, '%'))")
+            "OR LOWER(d.speciality) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Doctor> searchDoctors(String keyword);
 
 
