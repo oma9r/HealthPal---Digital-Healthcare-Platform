@@ -38,4 +38,12 @@ public class User {
     public boolean hasRole(String role) {
         return this.role.name().equals(role);
     }
+
+    public String toString(){
+        return "ID:"+ userId+"Name: " + fullName + ", Email: " + email + ", Phone: " + phoneNumber + ", Role: " + role;
+
+
+    }
+
+
 }

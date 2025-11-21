@@ -36,7 +36,7 @@ public class DoctorService{
         userRepo.save(user);
 
         Doctor doctor = Doctor.builder()
-                .specialty(request.getSpecialty())
+                .speciality(request.getSpecialty())
                 .bio(request.getBio())
                 .user(user)
                 .build();
