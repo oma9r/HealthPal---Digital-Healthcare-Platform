@@ -29,7 +29,7 @@ public class PatientService {
     }
     
     public Optional<Patient> getPatientByUserId(Integer userId) {
-        return patientRepo.findByUserUserId(userId);
+        return Optional.ofNullable(patientRepo.findByUserUserId(userId));
     }
     
     @Transactional

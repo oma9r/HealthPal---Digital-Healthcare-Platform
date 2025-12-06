@@ -75,13 +75,13 @@ public class ConsultationMessageController {
         
         // Verify sender is the one updating
         return messageService.getMessageById(messageId)
-            .map(m -> {
-                if (!m.getSender().getUserId().equals(user.getUserId()) && !user.hasRole("ADMIN")) {
+            .<ResponseEntity<ConsultationMessage>>map(m -> {
+                if (m.getSender().getUserId() != user.getUserId() && !user.hasRole("ADMIN")) {
                     return ResponseEntity.<ConsultationMessage>status(HttpStatus.FORBIDDEN).build();
                 }
                 return ResponseEntity.ok(messageService.updateMessage(messageId, message));
             })
-            .orElse(ResponseEntity.notFound().build());
+            .orElse(ResponseEntity.<ConsultationMessage>notFound().build());
     }
     
     @DeleteMapping("/{messageId}")
@@ -95,14 +95,14 @@ public class ConsultationMessageController {
         
         // Verify sender is the one deleting
         return messageService.getMessageById(messageId)
-            .map(m -> {
-                if (!m.getSender().getUserId().equals(user.getUserId()) && !user.hasRole("ADMIN")) {
+            .<ResponseEntity<Void>>map(m -> {
+                if (m.getSender().getUserId() != user.getUserId() && !user.hasRole("ADMIN")) {
                     return ResponseEntity.<Void>status(HttpStatus.FORBIDDEN).build();
                 }
                 messageService.deleteMessage(messageId);
-                return ResponseEntity.noContent().<Void>build();
+                return ResponseEntity.<Void>noContent().build();
             })
-            .orElse(ResponseEntity.notFound().build());
+            .orElse(ResponseEntity.<Void>notFound().build());
     }
 }
 

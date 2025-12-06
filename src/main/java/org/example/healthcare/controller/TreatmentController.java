@@ -70,23 +70,7 @@ public class TreatmentController {
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }
-    
-    @GetMapping("/progress/{id}")
-    @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'ADMIN', 'DONOR')")
-    public ResponseEntity<Map<String, Object>> getTreatmentProgress(@PathVariable Integer id) {
-        return treatmentService.getTreatmentById(id)
-            .map(treatment -> {
-                BigDecimal progress = treatmentService.calculateProgress(id);
-                return Map.of(
-                    "treatmentId", treatment.getTreatmentId(),
-                    "goalAmount", treatment.getGoalAmount() != null ? treatment.getGoalAmount() : BigDecimal.ZERO,
-                    "raisedAmount", treatment.getRaisedAmount(),
-                    "progressPercent", progress
-                );
-            })
-            .map(ResponseEntity::ok)
-            .orElse(ResponseEntity.notFound().build());
-    }
+
     
     @GetMapping("/patient/{patientId}")
     @PreAuthorize("hasAnyRole('PATIENT', 'DOCTOR', 'ADMIN')")
@@ -124,13 +108,13 @@ public class TreatmentController {
         // Verify ownership if not admin
         if (!user.hasRole("ADMIN")) {
             return treatmentService.getTreatmentById(id)
-                .map(t -> {
-                    if (!t.getPatient().getUser().getUserId().equals(user.getUserId())) {
-                        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+                .<ResponseEntity<Treatment>>map(t -> {
+                    if (t.getPatient().getUser().getUserId() != user.getUserId()) {
+                        return ResponseEntity.<Treatment>status(HttpStatus.FORBIDDEN).build();
                     }
                     return ResponseEntity.ok(treatmentService.updateTreatment(id, treatment));
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.<Treatment>notFound().build());
         }
         
         return ResponseEntity.ok(treatmentService.updateTreatment(id, treatment));
@@ -144,14 +128,14 @@ public class TreatmentController {
         
         if (!user.hasRole("ADMIN")) {
             return treatmentService.getTreatmentById(id)
-                .map(t -> {
-                    if (!t.getPatient().getUser().getUserId().equals(user.getUserId())) {
-                        return ResponseEntity.status(HttpStatus.FORBIDDEN).<Void>build();
+                .<ResponseEntity<Void>>map(t -> {
+                    if (t.getPatient().getUser().getUserId() != user.getUserId()) {
+                        return ResponseEntity.<Void>status(HttpStatus.FORBIDDEN).build();
                     }
                     treatmentService.deleteTreatment(id);
-                    return ResponseEntity.noContent().<Void>build();
+                    return ResponseEntity.<Void>noContent().build();
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.<Void>notFound().build());
         }
         
         treatmentService.deleteTreatment(id);

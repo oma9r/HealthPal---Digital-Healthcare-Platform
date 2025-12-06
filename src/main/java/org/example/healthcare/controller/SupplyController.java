@@ -88,13 +88,13 @@ public class SupplyController {
         // Verify ownership if not admin
         if (!user.hasRole("ADMIN")) {
             return supplyService.getSupplyById(id)
-                .map(s -> {
-                    if (s.getNgo() != null && !s.getNgo().getUser().getUserId().equals(user.getUserId())) {
+                .<ResponseEntity<Supply>>map(s -> {
+                    if (s.getNgo() != null && s.getNgo().getUser().getUserId() != user.getUserId()) {
                         return ResponseEntity.<Supply>status(HttpStatus.FORBIDDEN).build();
                     }
                     return ResponseEntity.ok(supplyService.updateSupply(id, supply));
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.<Supply>notFound().build());
         }
         
         return ResponseEntity.ok(supplyService.updateSupply(id, supply));
@@ -116,14 +116,14 @@ public class SupplyController {
         
         if (!user.hasRole("ADMIN")) {
             return supplyService.getSupplyById(id)
-                .map(s -> {
-                    if (s.getNgo() != null && !s.getNgo().getUser().getUserId().equals(user.getUserId())) {
+                .<ResponseEntity<Void>>map(s -> {
+                    if (s.getNgo() != null && s.getNgo().getUser().getUserId() != user.getUserId()) {
                         return ResponseEntity.<Void>status(HttpStatus.FORBIDDEN).build();
                     }
                     supplyService.deleteSupply(id);
-                    return ResponseEntity.noContent().<Void>build();
+                    return ResponseEntity.<Void>noContent().build();
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.<Void>notFound().build());
         }
         
         supplyService.deleteSupply(id);

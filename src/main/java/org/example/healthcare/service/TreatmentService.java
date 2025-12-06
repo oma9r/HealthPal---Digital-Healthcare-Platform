@@ -2,6 +2,7 @@ package org.example.healthcare.service;
 
 import org.example.healthcare.model.Patient;
 import org.example.healthcare.model.Treatment;
+import org.example.healthcare.repository.DonationRepo;
 import org.example.healthcare.repository.PatientRepo;
 import org.example.healthcare.repository.TreatmentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class TreatmentService {
     private PatientRepo patientRepo;
     
     @Autowired
-    private DonationService donationService;
+    private DonationRepo donationRepo;
     
     public List<Treatment> getAllTreatments() {
         return treatmentRepo.findAll();
@@ -84,7 +85,7 @@ public class TreatmentService {
     
     @Transactional
     public void updateRaisedAmount(Integer treatmentId) {
-        BigDecimal totalDonated = donationService.getTotalDonatedByTreatmentId(treatmentId);
+        BigDecimal totalDonated = donationRepo.getTotalDonatedByTreatmentId(treatmentId);
         treatmentRepo.findById(treatmentId)
             .ifPresent(treatment -> {
                 treatment.setRaisedAmount(totalDonated);
@@ -107,7 +108,7 @@ public class TreatmentService {
                     treatment.getGoalAmount().compareTo(BigDecimal.ZERO) == 0) {
                     return BigDecimal.ZERO;
                 }
-                BigDecimal totalDonated = donationService.getTotalDonatedByTreatmentId(treatmentId);
+                BigDecimal totalDonated = donationRepo.getTotalDonatedByTreatmentId(treatmentId);
                 return totalDonated
                     .divide(treatment.getGoalAmount(), 4, java.math.RoundingMode.HALF_UP)
                     .multiply(BigDecimal.valueOf(100));

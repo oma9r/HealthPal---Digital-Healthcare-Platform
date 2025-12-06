@@ -64,14 +64,14 @@ public class MedicalRecordController {
         String email = auth.getName();
         
         return medicalRecordService.getRecordById(id)
-            .map(record -> {
+            .<ResponseEntity<MedicalRecord>>map(record -> {
                 if (medicalRecordService.canAccessRecord(email, record)) {
                     return ResponseEntity.ok(record);
                 } else {
                     return ResponseEntity.<MedicalRecord>status(HttpStatus.FORBIDDEN).build();
                 }
             })
-            .orElse(ResponseEntity.notFound().build());
+            .orElse(ResponseEntity.<MedicalRecord>notFound().build());
     }
     
     @PutMapping("/{id}")

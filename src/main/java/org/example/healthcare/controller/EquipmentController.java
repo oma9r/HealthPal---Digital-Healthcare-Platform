@@ -84,13 +84,13 @@ public class EquipmentController {
         // Verify ownership if not admin
         if (!user.hasRole("ADMIN")) {
             return equipmentService.getEquipmentById(id)
-                .map(e -> {
-                    if (e.getNgo() != null && !e.getNgo().getUser().getUserId().equals(user.getUserId())) {
+                .<ResponseEntity<Equipment>>map(e -> {
+                    if (e.getNgo() != null && e.getNgo().getUser().getUserId() != user.getUserId()) {
                         return ResponseEntity.<Equipment>status(HttpStatus.FORBIDDEN).build();
                     }
                     return ResponseEntity.ok(equipmentService.updateEquipment(id, equipment));
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.<Equipment>notFound().build());
         }
         
         return ResponseEntity.ok(equipmentService.updateEquipment(id, equipment));
@@ -104,14 +104,14 @@ public class EquipmentController {
         
         if (!user.hasRole("ADMIN")) {
             return equipmentService.getEquipmentById(id)
-                .map(e -> {
-                    if (e.getNgo() != null && !e.getNgo().getUser().getUserId().equals(user.getUserId())) {
+                .<ResponseEntity<Void>>map(e -> {
+                    if (e.getNgo() != null && e.getNgo().getUser().getUserId() != user.getUserId()) {
                         return ResponseEntity.<Void>status(HttpStatus.FORBIDDEN).build();
                     }
                     equipmentService.deleteEquipment(id);
-                    return ResponseEntity.noContent().<Void>build();
+                    return ResponseEntity.<Void>noContent().build();
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.<Void>notFound().build());
         }
         
         equipmentService.deleteEquipment(id);
