@@ -52,7 +52,8 @@ public class ConsultationService {
     }
 
     public Consultation getConsultationById(int id) {
-        return consultationRepository.findById(id);
+        return consultationRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Consultation not found with id: " + id));
     }
 
     public Consultation createConsultation(Consultation cons) {

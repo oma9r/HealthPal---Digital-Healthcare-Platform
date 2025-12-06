@@ -15,6 +15,7 @@ import java.sql.Date;
 @Table(name = "patient")
 public class Patient {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "patient_id")
     private int patientId;
     @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
