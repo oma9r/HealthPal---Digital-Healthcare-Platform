@@ -96,14 +96,14 @@ public class NgoController {
         
         // Verify ownership if not admin
         if (!user.hasRole("ADMIN")) {
-            return  ngoService.getNGOById(id)
+            return ngoService.getNGOById(id)
                 .map(n -> {
                     if (n.getUser().getUserId() != user.getUserId()) {
-                        return ResponseEntity.<NGO>status(HttpStatus.FORBIDDEN).build();
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).<NGO>build();
                     }
                     return ResponseEntity.ok(ngoService.updateNGO(id, ngo));
                 })
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.<NGO>notFound().build());
         }
         
         return ResponseEntity.ok(ngoService.updateNGO(id, ngo));
