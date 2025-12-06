@@ -96,7 +96,7 @@ public class NgoController {
         
         // Verify ownership if not admin
         if (!user.hasRole("ADMIN")) {
-            return ngoService.getNGOById(id)
+            return  ngoService.getNGOById(id)
                 .map(n -> {
                     if (n.getUser().getUserId() != user.getUserId()) {
                         return ResponseEntity.<NGO>status(HttpStatus.FORBIDDEN).build();
