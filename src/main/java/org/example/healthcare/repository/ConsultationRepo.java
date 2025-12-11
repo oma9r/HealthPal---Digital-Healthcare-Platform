@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface ConsultationRepo extends JpaRepository<Consultation, Integer> {
-    Consultation findById(long id);
+    // findById is already provided by JpaRepository
 
 
 

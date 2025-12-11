@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 
 public class Consultation {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name ="consultation_id")
     private int id;
     @ManyToOne(fetch = FetchType.EAGER)
