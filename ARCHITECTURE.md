@@ -162,10 +162,6 @@ Relationships are maintained through foreign keys ensuring referential integrity
 - Enables Arabic ↔ English translation for consultations
 - Configurable via application properties
 
-### Health Alerts Service
-- Integration point for public health APIs
-- Can fetch alerts from WHO or local health authorities
-- Fallback to local storage if API unavailable
 
 ## Logging & Monitoring
 
